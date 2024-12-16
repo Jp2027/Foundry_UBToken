@@ -3,14 +3,20 @@ pragma solidity ^0.8.13;
 
 import {Script,console} from "forge-std/Script.sol";
 import {IERC20} from "../src/interfaces/IERC20.sol";
+import {UBToken} from "../src/UBToken.sol";
 
 contract UBTokenDeploy is Script {
     
-    address constant USDD=0x0C10bF8FcB7Bf5412187A595ab97a3609160b5c6;
+    address recipient = 0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc;
 
-    function run() public view{
-        IERC20 usdd = IERC20(USDD);
-        console.log(usdd.totalSupply());
+    function run() external {
+      
+        vm.startBroadcast();
+
+        // Deploy the UBToken contract
+        UBToken token = new UBToken("University of Bridgeport Token","UBT",18,1_000_000 * 10 ** 18);
+        uint256 amount = 100 * 10 ** 18;
+        token.transfer(recipient, amount);
+        vm.stopBroadcast();
     }
-
 }
